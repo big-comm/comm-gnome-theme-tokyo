@@ -7,7 +7,8 @@ pkgrel=$(date +%H%M)
 arch=('any')
 url="https://github.com/big-comm/${pkgname}"
 license=('MIT')
-source=("Nordic-cursors.tar.zst" "Tokyonight-Dark-Icons.tar.zst" "Tokyonight-Dark-Theme.tar.zst" "tokyonight1.avif")
+#source=("Nordic-cursors.tar.zst" "Tokyonight-Dark-Icons.tar.zst" "Tokyonight-Dark-Theme.tar.zst" "tokyonight1.avif")
+source=("git+https://github.com/big-comm/${pkgname}.git")
 md5sums=('SKIP')
 install="pkgbuild.install"
 
