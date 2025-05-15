@@ -28,12 +28,28 @@ pre_install() {
 
 # Function executed after package installation
 post_install() {
+    printMsg "Changing permissions..."
+
+    chown root:root "tmp/Nordic-cursors.tar.zst"
+    chown root:root "tmp/Tokyonight-Dark-Icons.tar.zst"
+    chown root:root "tmp/Tokyonight-Dark-Theme.tar.zst"
+    chown root:root "tmp/tokyonight1.avif"
+
     printMsg "Extracting theme and icon files..."
+
     tar -I zstd -xf "tmp/Nordic-cursors.tar.zst" -C /usr/share/icons
     tar -I zstd -xf "tmp/Tokyonight-Dark-Icons.tar.zst" -C /usr/share/icons
     tar -I zstd -xf "tmp/Tokyonight-Dark-Theme.tar.zst" -C /usr/share/themes
     cp -f "/tmp/tokyonight1.avif" /usr/share/wallpapers/
+
     printMsg "Extraction completed"
+
+    printMsg "Removing temporary files..."
+    
+    rm -f "tmp/Nordic-cursors.tar.zst"
+    rm -f "tmp/Tokyonight-Dark-Icons.tar.zst"
+    rm -f "tmp/Tokyonight-Dark-Theme.tar.zst"
+    rm -f "tmp/tokyonight1.avif"
 
     printMsg "Applying TokyoNight-Dark theme for GNOME and configuring GTK..."
 
