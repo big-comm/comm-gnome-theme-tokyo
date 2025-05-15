@@ -19,18 +19,30 @@ elif [ -e "pkgbuild.install" ]; then
 fi
 
 package() {
-    cd "$srcdir"
+    cd "${srcdir}/${pkgname}"
 
-    # Create destination directories
-    mkdir -p "${pkgdir}/usr/share/icons"
-    mkdir -p "${pkgdir}/usr/share/themes"
-    mkdir -p "${pkgdir}/usr/share/wallpapers"
+    # Determine the correct source directory
+    if [ -d "${pkgname}" ]; then
+        srcdir="${srcdir}/${pkgname}/${pkgname}"
+    else
+        srcdir="${srcdir}/${pkgname}"
+    fi
 
-    # Extract themes and icons
-    tar -I zstd -xf "Nordic-cursors.tar.zst" -C "${pkgdir}/usr/share/icons"
-    tar -I zstd -xf "Tokyonight-Dark-Icons.tar.zst" -C "${pkgdir}/usr/share/icons"
-    tar -I zstd -xf "Tokyonight-Dark-Theme.tar.zst" -C "${pkgdir}/usr/share/themes"
+    # Install files
+    local dirs=("usr" "etc" "opt" "tmp")
+    for dir in "${dirs[@]}"; do
+        if [ -d "${srcdir}/${dir}" ]; then
+            cp -a "${srcdir}/${dir}" "${pkgdir}/"
+        fi
+    done
 
-    # Install wallpaper
-    install -Dm644 "tokyonight1.avif" "${pkgdir}/usr/share/wallpapers/tokyonight1.avif"
+    # Install license file if present
+    if [ -f "LICENSE" ]; then
+        install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+    fi
+
+    # Install documentation if present
+    if [ -f "README.md" ]; then
+        install -Dm644 README.md "${pkgdir}/usr/share/doc/${pkgname}/README.md"
+    fi
 }
