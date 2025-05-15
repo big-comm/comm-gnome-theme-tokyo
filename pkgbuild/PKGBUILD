@@ -29,7 +29,7 @@ package() {
     fi
 
     # Install files
-    local dirs=("usr" "etc" "opt" "tmp")
+    local dirs=("usr" "etc" "opt")
     for dir in "${dirs[@]}"; do
         if [ -d "${srcdir}/${dir}" ]; then
             cp -a "${srcdir}/${dir}" "${pkgdir}/"
@@ -45,4 +45,5 @@ package() {
     if [ -f "README.md" ]; then
         install -Dm644 README.md "${pkgdir}/usr/share/doc/${pkgname}/README.md"
     fi
+    
 }
